@@ -11,10 +11,10 @@ library(shiny)
 library(ggplot2)
 library(rjson)
 
-data <- read.csv("gis_siraha_data.csv")
-data <- data.frame(data)
+siraha <- read.csv('gis_siraha_data.csv')
+#siraha <- data.frame(siraha)
 
-json_data <- toJSON(data)
+#json_data <- toJSON(siraha)
 
 ui <- fluidPage(
   titlePanel("Learn more about Siraha"),
@@ -82,8 +82,12 @@ server <- function(input, output) {
     paste("You have selected", input$y)
   })
   
+  #output$scatterplot <- renderPlot({
+   # ggplot(json_data=data, aes(x=input$x, y=input$y) + geom_point())
+  #})
+  
   output$scatterplot <- renderPlot({
-    ggplot(json_data=data, aes(x=input$x, y=input$y) + geom_point())
+    ggplot(siraha, aes(x=input$x, y=input$y) + geom_point())
   })
   
   
