@@ -7,6 +7,8 @@
 #    http://shiny.rstudio.com/
 #
 
+# Let's see if this sentence makes it to GitHub Desktop and GitHUb Online
+
 library(shiny)
 library(ggplot2)
 library(rjson)
