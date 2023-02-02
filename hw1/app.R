@@ -21,7 +21,7 @@ siraha <- read.csv('gis_siraha_data.csv')
 ui <- fluidPage(
   titlePanel("Learn more about Siraha"),
   
-  sidebarLayout(
+  sidebarLayout(position="left",
     sidebarPanel(
       helpText("Nepali Census Bureau gathers data on various 
                 socio-economic indicators. Choose two of your likings."),
@@ -44,7 +44,7 @@ ui <- fluidPage(
       
       selectInput("y", 
                   label = "Choose a variable to display",
-                  choices = c("perc_dwms_uncoveredwell_kuwa", 
+                  choices = c("perc_dmws_coveredwell_kuwa", 
                               "perc_cookingfuel_wood_firewood",
                               "perc_cableTV", 
                               "perc_cycle"),
@@ -64,6 +64,17 @@ ui <- fluidPage(
     ),
     
     mainPanel(
+      h4("The Marginal Nepal: the Story of Siraha"),
+      br(),
+      p('Siraha is one of the backward districts in the country.
+        It has some of the worst socio-economic statistics. Much
+        of this contributed to the centralized nature of the state. Some
+        could be the involvement of the society, where caste system led
+        upper castes to monopolize the resources'),
+      br(),
+      div('In light of this, it is important to see the statistics and see
+          where things are in the country', style='color:blue'),
+      br(),
       textOutput("selected_var_x"),
       textOutput("selected_var_y"),
       #textOutput("min_max"),
@@ -89,7 +100,7 @@ server <- function(input, output) {
   #})
   
   output$scatterplot <- renderPlot({
-    ggplot(siraha, aes(x=input$x, y=input$y) + geom_point())
+    ggplot(siraha, aes_string(x=input$x, y=input$y)) + geom_point()
   })
   
   
