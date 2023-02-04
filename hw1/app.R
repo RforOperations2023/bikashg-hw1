@@ -84,6 +84,7 @@ ui <- fluidPage(
                               "Percentage Without Toilet" = 'perc_householdsans_toilet'),
                   selected = "literacy_rate"),
     
+    hr(),
     
     # Enter text for plot title ---------------------------------------------
     textInput("plot_title", 
@@ -92,12 +93,13 @@ ui <- fluidPage(
     
     
       hr(),
-      strong("About this App:"),
+      strong("About this App:", style='color:blue'),
       p('In the future versions, the users will be able to employ additional
         widgets (such as one below) to find relationships between various attributes.'), 
-      p('Furthermore,there will be two additional tabs dedicated to help users
+      p('Furthermore, there will be two additional tabs dedicated to help users
         learn more about statistics at the provincial and the federal level.'),
     
+      em('An example of a future widget:', style='color:green'),
     
       # Select variable for z ---------------------------------------
       radioButtons(inputId = "z",
@@ -105,12 +107,6 @@ ui <- fluidPage(
                    choices = c("Dalit Percentage in a Municipality" = "perc_dalit_total", 
                                "Municipality's share of Population" = "pop_perc" ),
                    selected = "pop_perc"),
-    
-    
-     # Show data table ---------------------------------------------
-      checkboxInput("show_data",
-                    label="Show data table",
-                    value=TRUE),
      
     
       # Visual separation-------------------------------------------
@@ -119,7 +115,12 @@ ui <- fluidPage(
     
       # Download button to download the district's data--------------------------
       downloadButton("download_siraha", "Download"),
-      h6("To download, click the download button above")
+      h6("To download, click the download button above"),
+    
+    # Show data table ---------------------------------------------
+    checkboxInput("show_data",
+                  label="Show the data table in addition to scatterplot.",
+                  value=TRUE),
       
     ),
     
