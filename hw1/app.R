@@ -12,6 +12,7 @@
 library(shiny)
 library(ggplot2)
 library(rjson)
+library(DT)
 
 siraha <- read.csv('gis_siraha_data.csv')
 #siraha <- data.frame(siraha)
@@ -19,6 +20,10 @@ siraha <- read.csv('gis_siraha_data.csv')
 #json_data <- toJSON(siraha)
 
 ui <- fluidPage(
+  
+  #shinythemes::themeSelector(),
+  theme = shinythemes::shinytheme("readable"),
+  
   titlePanel("Learn more about Siraha"),
   
   sidebarLayout(position="left",
@@ -56,7 +61,14 @@ ui <- fluidPage(
                               "perc_cookingfuel_wood_firewood",
                               "household_size", 
                               "perc_SLC_equiv"),
-                  selected = "literacy_rate")
+                  selected = "literacy_rate"),
+      
+      checkboxInput("show_data",
+                    label="Show data table",
+                    value=TRUE),
+      
+      downloadButton("download_siraha", "Download"),
+      h6("To download, click the download button above")
       
       #sliderInput("range", 
       #label = "Range of interest:",
@@ -75,10 +87,14 @@ ui <- fluidPage(
       div('In light of this, it is important to see the statistics and see
           where things are in the country', style='color:blue'),
       br(),
+      br(),
+      img(src = "siraha_pic.jpeg", height = 300, width = 500),
       textOutput("selected_var_x"),
       textOutput("selected_var_y"),
       #textOutput("min_max"),
-      plotOutput(outputId="scatterplot")
+      plotOutput(outputId="scatterplot"),
+      br(),
+      DT::dataTableOutput("show_table_out")
       
       
     )
@@ -103,6 +119,22 @@ server <- function(input, output) {
     ggplot(siraha, aes_string(x=input$x, y=input$y)) + geom_point()
   })
   
+  output$show_table_out <- DT::renderDataTable(
+    if(input$show_data){
+      DT::datatable(data=siraha[,1:5],
+                    options=list(pageLength=5),
+                    rownames=FALSE)
+    }
+  )
+  
+  output$download_siraha <- downloadHandler(
+    filename = function() {
+      paste("siraha_stats", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      write.csv(siraha, file)
+    }
+  )
   
   #output$min_max <- renderText({ 
   #paste("You have chosen a range that goes from",
